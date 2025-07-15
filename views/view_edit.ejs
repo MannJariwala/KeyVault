@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>View/Edit API Key</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9fafb;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .field {
+      margin-bottom: 1.5rem;
+    }
+    .field label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .field-value, input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .field-value {
+      background: #f1f5f9;
+      font-family: monospace;
+    }
+    .actions {
+      text-align: right;
+      margin-top: 2rem;
+    }
+    .btn {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      background: #2563eb;
+      color: white;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .btn:hover {
+      background: #1e40af;
+    }
+    .btn-secondary {
+      background: #6b7280;
+    }
+  </style>
+</head>
+<body>
+  <% if (editMode) { %>
+    <form method="POST" action="/edit/<%= key.id %>">
+      <div class="container">
+        <h2>Edit API Key</h2>
+
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" name="name" id="name" value="<%= key.name %>" required />
+        </div>
+
+        <div class="field">
+          <label for="service">Service</label>
+          <input type="text" name="service" id="service" value="<%= key.service %>" required />
+        </div>
+
+        <div class="field">
+          <label for="environment">Environment</label>
+          <select name="environment" id="environment" required>
+            <option value="Development" <% if (key.environment === 'Development') { %> selected <% } %>>Development</option>
+            <option value="Staging" <% if (key.environment === 'Staging') { %> selected <% } %>>Staging</option>
+            <option value="Production" <% if (key.environment === 'Production') { %> selected <% } %>>Production</option>
+            <option value="Personal" <% if (key.environment === 'Personal') { %> selected <% } %>>Personal</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="api_key_value">API Key</label>
+          <input type="password" name="api_key_value" id="api_key_value" rows="3" value="<%= key.api_key_value %>" required> 
+        </div>
+
+        <div class="field">
+          <label for="notes">Notes</label>
+          <textarea name="notes" id="notes" rows="3"><%= key.notes %></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn">Save</button>
+          <a href="/edit/<%= key.id %>" class="btn btn-secondary">Cancel</a>
+        </div>
+      </div>
+    </form>
+
+  <% } else { %>
+    <div class="container">
+      <h2>API Key Details</h2>
+
+      <div class="field">
+        <label>Name</label>
+        <div class="field-value"><%= key.name %></div>
+      </div>
+
+      <div class="field">
+        <label>Service</label>
+        <div class="field-value"><%= key.service %></div>
+      </div>
+
+      <div class="field">
+        <label>Environment</label>
+        <div class="field-value"><%= key.environment %></div>
+      </div>
+
+      <div class="field">
+        <label>API Key</label>
+        <input type="password" value="<%= key.api_key_value %>" readonly />
+      </div>
+
+      <div class="field">
+        <label>Notes</label>
+        <div class="field-value"><%= key.notes || '—' %></div>
+      </div>
+
+      <div class="field">
+        <label>Last Copied</label>
+        <div class="field-value"><%= key.last_copied_at.toLocaleString() || 'Never' %></div>
+      </div>
+
+      <div class="actions">
+        <a href="/edit/<%= key.id %>?edit=1" class="btn">Edit</a>
+      </div>
+    </div>
+  <% } %>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Add New API Key</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8fafc;
+        padding: 2rem;
+      }
+      .form-container {
+        background-color: #fff;
+        max-width: 500px;
+        margin: auto;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        margin-bottom: 1.5rem;
+        text-align: center;
+      }
+      label {
+        display: block;
+        margin-top: 1rem;
+        font-weight: bold;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 0.7rem;
+        margin-top: 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+      }
+      button {
+        margin-top: 1.5rem;
+        width: 100%;
+        padding: 0.8rem;
+        background-color: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #1e40af;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Add New API Key</h2>
+      <form action="/add" method="POST">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" required />
+
+        <label for="service">Service</label>
+        <input type="text" name="service" id="service" required />
+
+        <label for="environment">Environment</label>
+        <select name="environment" id="environment" required>
+          <option value="" selected disabled>Select</option>
+          <option value="Development">Development</option>
+          <option value="Staging">Staging</option>
+          <option value="Production">Production</option>
+          <option value="Personal">Personal</option>
+        </select>
+
+        <label for="api_key_value">API Key</label>
+        <textarea
+          name="api_key_value"
+          id="api_key_value"
+          rows="3"
+          required
+        ></textarea>
+
+        <label for="notes">Notes</label>
+        <textarea name="notes" id="notes" rows="3"></textarea>
+
+        <button type="submit">Add Key</button>
+      </form>
+    </div>
+  </body>
+</html>

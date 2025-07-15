@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 2rem;
+        background: #f4f4f4;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #f0f0f0;
+      }
+      button {
+        margin-right: 8px;
+        padding: 6px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      .copy-btn {
+        background-color: #3498db;
+        color: white;
+      }
+      .edit-btn {
+        background-color: #f1c40f;
+        color: white;
+      }
+      .delete-btn {
+        background-color: #e74c3c;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome, <%= user.data.email %></h1>
+    <div style="text-align: right; margin-bottom: 1rem">
+      <form action="/logout" method="POST" style="display: inline">
+        <button class="delete-btn">Logout</button>
+      </form>
+    </div>
+    <a href="/add"><button class="edit-btn">Add key</button></a>
+    <table>
+      <thead>
+        <tr>
+          <th>Friendly Name</th>
+          <th>Service</th>
+          <th>Environment</th>
+          <th>Notes</th>
+          <th>Last Copied</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% apikeys.forEach(api => { %>
+        <tr>
+          <td><%= api.name %></td>
+          <td><%= api.service %></td>
+          <td><%= api.environment %></td>
+          <td><%= api.notes %></td>
+          <td>
+            <%= api.last_copied_at ? api.last_copied_at.toLocaleString() :
+            'Never' %>
+          </td>
+          <td class="actions">
+            <form
+              action="/copy/<%= api.id %>"
+              method="POST"
+              style="display: inline"
+            >
+              <button
+                onclick="copy(`<%= api.id %>`,`<%= api.api_key_value  %>`,this)"
+                class="copy-btn"
+                id="`copy-<%=api.id%>`"
+              >
+                Copy
+              </button>
+            </form>
+            <a href="/edit/<%= api.id %>"
+              ><button class="edit-btn">View/Edit</button></a
+            >
+            <form
+              action="/delete/<%= api.id %>"
+              method="POST"
+              style="display: inline"
+            >
+              <button class="delete-btn">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </body>
+  <script>
+    async function copy(id, value, e) {
+      e.preventDefault();
+      await navigator.clipboard.writeText(value);
+      document.getElementById(`copy-${id}`).innerText = "Copied";
+      alert("Copied to clipboard");
+    }
+  </script>
+</html>
