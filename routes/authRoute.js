@@ -23,7 +23,7 @@ router
   })
   .post(handleLogin);
 
-router.get("/dashboard", protectAuthentication, handleOnLoadDashboard);
+router.get("/dashboard", protectAuthentication , handleOnLoadDashboard);
 
 router.post("/logout", handleLogout);
 
